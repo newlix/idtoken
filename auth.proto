@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package auth;
+
+message AccessTokenInfo {
+	string userID = 1;
+	int64 issueUnix = 2;
+}
+
+message RefreshTokenInfo {
+	string userID = 5;
+	int64 issueUnix= 6;
+}
