@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package token;
+
+message Info {
+	int32 type = 1;
+	string userID = 2;
+	int64 issueUnix = 3;
+}
+
