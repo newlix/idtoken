@@ -15,6 +15,7 @@ func randomkey() []byte {
 	}
 	return token
 }
+
 func TestCrypt(t *testing.T) {
 	f := func(x string) bool {
 		k := randomkey()
