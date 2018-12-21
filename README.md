@@ -1,2 +1,2 @@
 #Token
-[![Build Status](http://drone.least.tw/api/badges/newlix/token/status.svg)](http://drone.least.tw/newlix/token)
+[![Build Status](https://cloud.drone.io/api/badges/newlix/token/status.svg)](https://cloud.drone.io/newlix/token)
