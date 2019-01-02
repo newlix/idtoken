@@ -1,4 +1,4 @@
-package token
+package authtoken
 
 import (
 	"crypto/aes"
