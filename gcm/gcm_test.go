@@ -1,13 +1,20 @@
-package authtoken
+package gcm_test
 
 import (
 	"log"
 	"math/rand"
 	"testing"
 	"testing/quick"
+	"time"
+
+	"github.com/newlix/token/gcm"
 )
 
-func randomkey() []byte {
+func init() {
+	rand.Seed(time.Now().UTC().UnixNano())
+}
+
+func key() []byte {
 	token := make([]byte, 24)
 	_, err := rand.Read(token)
 	if err != nil {
@@ -18,12 +25,12 @@ func randomkey() []byte {
 
 func TestCrypt(t *testing.T) {
 	f := func(x string) bool {
-		k := randomkey()
-		b, err := encrypt([]byte(x), k)
+		k := key()
+		b, err := gcm.Encrypt([]byte(x), k)
 		if err != nil {
 			t.Errorf("error encrypt: %v, x = %q, k = %q", err, x, k)
 		}
-		y, err := decrypt(b, k)
+		y, err := gcm.Decrypt(b, k)
 		if err != nil {
 			t.Errorf("error decrypt: %v, x = %q, k = %q", err, x, k)
 		}

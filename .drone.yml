@@ -1,12 +1,9 @@
 kind: pipeline
 name: default
 
-workspace:
-  base: /go
-  path: src/github.com/newlix/authtoken
 steps:
 - name: test
   image: golang
   commands:
-  - go get -v -t ./...
+  - go get -v
   - go test -v --cover ./...

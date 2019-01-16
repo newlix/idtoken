@@ -5,10 +5,12 @@ import (
 	"encoding/base64"
 	"encoding/gob"
 	"errors"
+	"fmt"
 	"time"
+
+	"github.com/newlix/authtoken/gcm"
 )
 
-var ErrorTokenExpire = errors.New("token expire")
 var ErrorInvalidID = errors.New("invalid id")
 
 var Encoding = base64.RawURLEncoding
@@ -31,20 +33,20 @@ func New(secret []byte, id string) (token string, err error) {
 	if err := enc.Encode(&p); err != nil {
 		return "", err
 	}
-	cb, err := encrypt(buf.Bytes(), secret)
+	cb, err := gcm.Encrypt(buf.Bytes(), secret)
 	if err != nil {
 		return "", err
 	}
 	return Encoding.EncodeToString(cb), nil
 }
 
-func Parse(secret []byte, life time.Duration, token string) (id string, err error) {
+func Parse(secret []byte, token string, life time.Duration) (id string, err error) {
 	p := Payload{}
 	cb, err := Encoding.DecodeString(token)
 	if err != nil {
 		return "", err
 	}
-	b, err := decrypt(cb, secret)
+	b, err := gcm.Decrypt(cb, secret)
 	if err != nil {
 		return "", err
 	}
@@ -53,8 +55,9 @@ func Parse(secret []byte, life time.Duration, token string) (id string, err erro
 	if err := dec.Decode(&p); err != nil {
 		return "", err
 	}
-	if p.Issue.Before(time.Now().Add(-life)) {
-		return "", ErrorTokenExpire
+	expire := p.Issue.Add(life)
+	if expire.Before(time.Now()) {
+		return "", fmt.Errorf("token expired on %v", expire)
 	}
 	return p.ID, nil
 }
