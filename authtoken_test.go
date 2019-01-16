@@ -7,13 +7,14 @@ import (
 	"time"
 
 	"github.com/newlix/authtoken"
-	"github.com/stretchr/testify/assert"
 )
 
 var secret = []byte("NcRfTjWnZr4u7x!AAD*G-KaPdSgVkXp2")
 
 func TestConstants(t *testing.T) {
-	assert.Equal(t, authtoken.Encoding, base64.RawURLEncoding)
+	if authtoken.Encoding != base64.RawURLEncoding {
+		t.Errorf("Encoding = %v, want %v", authtoken.Encoding, base64.RawURLEncoding)
+	}
 }
 
 func TestOK(t *testing.T) {
