@@ -7,7 +7,7 @@ import (
 	"testing/quick"
 	"time"
 
-	"github.com/newlix/token/gcm"
+	"github.com/newlix/authtoken/gcm"
 )
 
 func init() {
