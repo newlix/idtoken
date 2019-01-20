@@ -11,19 +11,20 @@ var key = []byte("NcRfTjWnZr4u7x!AAD*G-KaPdSgVkXp2")
 
 func TestOK(t *testing.T) {
 	id := "123"
-	issue := time.Unix(123, 10)
-	tok, err := idtoken.New(key, id, issue)
+	before := time.Now()
+	tok, err := idtoken.New(key, id)
 	if err != nil {
 		t.Error(err)
 	}
-	gotid, gotissue, err := idtoken.Parse(key, tok)
+	after := time.Now()
+	tokid, issue, err := idtoken.Parse(key, tok)
 	if err != nil {
 		t.Error(err)
 	}
-	if gotid != id {
-		t.Errorf("got id = %q, want %q", gotid, id)
+	if tokid != id {
+		t.Errorf("id = %q, want %q", tokid, id)
 	}
-	if gotissue != issue {
-		t.Errorf("got issue = %q, want %q", gotissue, issue)
+	if issue.Before(before) || issue.After(after) {
+		t.Errorf("token is not issued now")
 	}
 }

@@ -14,10 +14,10 @@ type payload struct {
 	Issue time.Time
 }
 
-func New(key []byte, id string, issuce time.Time) (string, error) {
+func New(key []byte, id string) (string, error) {
 	p := payload{
 		ID:    id,
-		Issue: issuce,
+		Issue: time.Now().UTC(),
 	}
 	var b bytes.Buffer
 	enc := gob.NewEncoder(&b)
