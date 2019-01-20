@@ -1,10 +1,10 @@
-package token_test
+package idtoken_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/newlix/token"
+	"github.com/newlix/idtoken"
 )
 
 var key = []byte("NcRfTjWnZr4u7x!AAD*G-KaPdSgVkXp2")
@@ -12,11 +12,11 @@ var key = []byte("NcRfTjWnZr4u7x!AAD*G-KaPdSgVkXp2")
 func TestOK(t *testing.T) {
 	id := "123"
 	issue := time.Unix(123, 10)
-	tok, err := token.New(key, id, issue)
+	tok, err := idtoken.New(key, id, issue)
 	if err != nil {
 		t.Error(err)
 	}
-	gotid, gotissue, err := token.Parse(key, tok)
+	gotid, gotissue, err := idtoken.Parse(key, tok)
 	if err != nil {
 		t.Error(err)
 	}

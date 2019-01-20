@@ -1,4 +1,4 @@
-package token
+package idtoken
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"encoding/gob"
 	"time"
 
-	"github.com/newlix/token/gcm"
+	"github.com/newlix/idtoken/gcm"
 )
 
 type payload struct {

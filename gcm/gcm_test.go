@@ -7,7 +7,7 @@ import (
 	"testing/quick"
 	"time"
 
-	"github.com/newlix/token/gcm"
+	"github.com/newlix/idtoken/gcm"
 )
 
 func init() {
@@ -15,12 +15,12 @@ func init() {
 }
 
 func key() []byte {
-	token := make([]byte, 32)
-	_, err := rand.Read(token)
+	idtoken := make([]byte, 32)
+	_, err := rand.Read(idtoken)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return token
+	return idtoken
 }
 
 func TestCrypt(t *testing.T) {
