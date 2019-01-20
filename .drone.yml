@@ -3,7 +3,7 @@ name: default
 
 workspace:
   base: /go
-  path: src/github.com/newlix/authtoken
+  path: src/github.com/newlix/token
 
 steps:
 - name: test

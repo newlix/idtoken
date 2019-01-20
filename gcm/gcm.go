@@ -9,13 +9,13 @@ import (
 )
 
 // https://astaxie.gitbooks.io/build-web-application-with-golang/en/09.6.html
-func Encrypt(plaintext []byte, key []byte) ([]byte, error) {
-	c, err := aes.NewCipher(key)
+func Encrypt(key []byte, plaintext []byte) ([]byte, error) {
+	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
 	}
 
-	gcm, err := cipher.NewGCM(c)
+	gcm, err := cipher.NewGCM(block)
 	if err != nil {
 		return nil, err
 	}
@@ -24,11 +24,10 @@ func Encrypt(plaintext []byte, key []byte) ([]byte, error) {
 	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
 		return nil, err
 	}
-
 	return gcm.Seal(nonce, nonce, plaintext, nil), nil
 }
 
-func Decrypt(ciphertext []byte, key []byte) ([]byte, error) {
+func Decrypt(key []byte, ciphertext []byte) ([]byte, error) {
 	c, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
