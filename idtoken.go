@@ -10,14 +10,14 @@ import (
 )
 
 type payload struct {
-	ID    string
-	Issue time.Time
+	ID        string
+	IssueUnix int64
 }
 
 func New(key []byte, id string) (string, error) {
 	p := payload{
-		ID:    id,
-		Issue: time.Now().UTC(),
+		ID:        id,
+		IssueUnix: time.Now().Unix(),
 	}
 	var b bytes.Buffer
 	enc := gob.NewEncoder(&b)
@@ -31,20 +31,20 @@ func New(key []byte, id string) (string, error) {
 	return base64.RawURLEncoding.EncodeToString(cb), nil
 }
 
-func Parse(key []byte, s string) (id string, issue time.Time, err error) {
+func Parse(key []byte, s string) (id string, issueUnix int64, err error) {
 	p := payload{}
 	cb, err := base64.RawURLEncoding.DecodeString(s)
 	if err != nil {
-		return "", time.Time{}, err
+		return "", 0, err
 	}
 	b, err := gcm.Decrypt(key, cb)
 	if err != nil {
-		return "", time.Time{}, err
+		return "", 0, err
 	}
 	buf := bytes.NewBuffer(b)
 	dec := gob.NewDecoder(buf)
 	if err := dec.Decode(&p); err != nil {
-		return "", time.Time{}, err
+		return "", 0, err
 	}
-	return p.ID, p.Issue, err
+	return p.ID, p.IssueUnix, err
 }
